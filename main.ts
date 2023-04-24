@@ -19,6 +19,12 @@ function moverDerecha () {
     maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 255)
     maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CCW, 255)
 }
+function moverDerechaCerradaTrasera () {
+    detener()
+    radio.sendValue("RLLb", 255)
+    radio.sendValue("RLRb", 255)
+    maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CCW, 255)
+}
 input.onButtonPressed(Button.A, function () {
     detener()
     basic.pause(5000)
@@ -67,6 +73,12 @@ radio.onReceivedValue(function (name, value) {
         RLD = value
     }
 })
+function moverIzquierdaCerradaTrasera () {
+    detener()
+    radio.sendValue("RRLb", 255)
+    radio.sendValue("RRRb", 255)
+    maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CCW, 255)
+}
 function moverAdelante () {
     detener()
     radio.sendValue("RLL", 255)
@@ -92,9 +104,13 @@ basic.forever(function () {
     RCTr = maqueen.readPatrol(maqueen.Patrol.PatrolRight)
     checkParameters()
     if (RLTl == 0 || RLTr == 0) {
-        moverDerecha()
+        moverDerechaCerradaTrasera()
+        basic.pause(250)
+        moverAdelante()
     } else if (RRTl == 0 || RRTr == 0) {
-        moverIzquierda()
+        moverIzquierdaCerradaTrasera()
+        basic.pause(250)
+        moverAdelante()
     } else if (RCTl == 0 || RCTr == 0) {
         moverAtras()
         basic.pause(500)
